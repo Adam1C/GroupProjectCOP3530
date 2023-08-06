@@ -3,6 +3,7 @@
 
 #include "Patients.h"
 #include <vector>
+#include <iostream>
 
 class MaxHeap {
 private:

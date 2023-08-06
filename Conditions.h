@@ -14,6 +14,8 @@ public:
     // Getters
     std::string getName() const;
     int getPriority() const;
+
+    void setPriority(int newPriority);
 };
 
 #endif // CONDITIONS_H

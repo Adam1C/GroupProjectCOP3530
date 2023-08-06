@@ -10,3 +10,7 @@ std::string Conditions::getName() const {
 int Conditions::getPriority() const {
     return priority;
 }
+
+void Conditions::setPriority(int newPriority) {
+    priority = newPriority;
+}

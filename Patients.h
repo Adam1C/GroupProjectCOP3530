@@ -4,6 +4,8 @@
 #include "Conditions.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <iostream> 
 
 class Patients {
 private:
@@ -20,6 +22,8 @@ public:
     std::string getName() const;
     int getAge() const;
     int getTriageValue() const;
+    void getPriorConditions() const;
+    void getCurrentConditions() const;
 
     // Calculate triage value based on conditions
     void calculateTriageValue();
@@ -30,6 +34,8 @@ public:
     void removeCurrentCondition(const std::string& conditionName);
     bool hasPriorCondition(const std::string& conditionName) const;
     bool hasCurrentCondition(const std::string& conditionName) const;
+
+    void updateCurrentConditionPriority(const std::string& conditionName, int urgency);
 };
 
 #endif // PATIENTS_H
