@@ -19,6 +19,9 @@ public:
 
     void push(const Patients& patient);
     Patients pop();
+
+    const Patients& operator[](int index) const;
+    void removeAt(int index);
 };
 
 #endif // MAXHEAP_H

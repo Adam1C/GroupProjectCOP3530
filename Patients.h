@@ -1,6 +1,7 @@
 #ifndef PATIENTS_H
 #define PATIENTS_H
 
+#include "Conditions.h"
 #include <string>
 #include <vector>
 
@@ -9,8 +10,8 @@ private:
     std::string name;
     int age;
     int triageValue;
-    std::unordered_map<std::string, bool> priorConditions;
-    std::unordered_map<std::string, bool> currentConditions; 
+    std::unordered_map<std::string, Conditions> priorConditions;
+    std::unordered_map<std::string, Conditions> currentConditions; 
 
 public:
     Patients(const std::string& name, int age);
@@ -24,10 +25,11 @@ public:
     void calculateTriageValue();
 
     // Hashmap
-    void addPriorCondition(const std::string& condition);
-    void addCurrentCondition(const std::string& condition);
-    bool hasPriorCondition(const std::string& condition); 
-    bool hasCurrentCondition(const std::string& condition); 
+    void addPriorCondition(const Conditions& condition);
+    void addCurrentCondition(const Conditions& condition);
+    void removeCurrentCondition(const std::string& conditionName);
+    bool hasPriorCondition(const std::string& conditionName) const;
+    bool hasCurrentCondition(const std::string& conditionName) const;
 };
 
 #endif // PATIENTS_H

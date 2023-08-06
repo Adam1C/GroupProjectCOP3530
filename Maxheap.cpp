@@ -57,3 +57,25 @@ void MaxHeap::heapifyDown(int index) {
         heapifyDown(largestIndex);
     }
 }
+
+const Patients& MaxHeap::operator[](int index) const {
+    return heap[index];
+}
+
+void MaxHeap::removeAt(int index) {
+    if (index < 0 || index >= heap.size()) {
+        throw std::out_of_range("Index out of bounds");
+    }
+
+    // Swap the patient at the specified index with the last patient
+    std::swap(heap[index], heap.back());
+    heap.pop_back();
+
+    // Check if the swapped patient is smaller than its children
+    if (index > 0 && heap[index].getTriageValue() > heap[(index - 1) / 2].getTriageValue()) {
+        heapifyUp(index);
+    }
+    else {
+        heapifyDown(index);
+    }
+}
