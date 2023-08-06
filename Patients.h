@@ -16,6 +16,7 @@ private:
     std::unordered_map<std::string, Conditions> currentConditions; 
 
 public:
+    Patients();
     Patients(const std::string& name, int age);
 
     // Getters

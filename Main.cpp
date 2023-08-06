@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -16,6 +15,13 @@ int main() {
 
     // Open the input text file
     std::string fileNumber; 
+
+
+    std::cout << "This code is supposed to represent how a doctor would treat patients in order of life threatening conditions" << std::endl;
+    std::cout << "The lower a priority value given to a condition the less life threatening the condition is and vise a versa" << std::endl;
+
+    std::ifstream inputFile;
+
     std::cout << "Enter the file number (1-5) or file name: ";
     std::cin >> fileNumber;
     if (fileNumber == "1")
@@ -29,7 +35,7 @@ int main() {
     else if (fileNumber == "5")
         std::ifstream inputFile("input5.txt");
     else
-        std::ifstream inputFile(fileName);
+        std::ifstream inputFile(fileNumber);
 
     if (!inputFile.is_open()) 
     {
@@ -37,8 +43,9 @@ int main() {
     }
 
     std::string line; 
-    Patients patient;
+    
     while (std::getline(inputFile, line)) { 
+        Patients patient;
         std::istringstream iss(line); 
         std::string section;  
         iss >> section; 
@@ -47,14 +54,14 @@ int main() {
             std::string name; 
             int age; 
             iss >> name >> age; 
-            patient(name, age);  
+            Patients patient(name, age);
         }
         else if (section == "PriorConditions:") { 
             std::string condition; 
             while (iss >> condition) { 
                 int urgency; 
                 iss >> urgency; 
-                patient.addPriorCondition(condition, urgency);  
+                patient.addPriorCondition(condition, urgency);
             }
         }
         else if (section == "CurrentConditions:") {
@@ -65,7 +72,7 @@ int main() {
                 patient.addCurrentCondition(condition, urgency);  
             }
             patient.calculateTriageValue();  
-            maxHeap.push(patient); 
+            maxHeap.push(patient);
         }
     }
 
@@ -102,11 +109,11 @@ int main() {
                 std::cin >> userMenuSelect;
                 if (userMenuSelect == 1) 
                 {
-                    validInput = true;
+                    validInput = true; 
                     std::string conditionChoice;
                     int urgancy;
                     std::cout << "Enter the name of the Condition you would like to add: " << std::endl;
-                    std::cin >> conditionChoice; 
+                    std::cin >> conditionChoice;
                     if (maxHeap[patientNum].hasCurrentCondition(conditionChoice)) 
                     {
                         std::cout << "The patient already has the condition." << std::endl;
@@ -148,7 +155,7 @@ int main() {
                     {
                         while (true) 
                         {
-                            std::cout << "Enter the Severity of the Condition (1-200, 200 being immediate care needed): ";
+                            std::cout << "Enter the Severity of the Condition (1-200, 200 being immediate care needed): "; 
                             std::cin >> urgancy;
 
                             // Check if the input is a valid integer and within the specified range
@@ -164,6 +171,7 @@ int main() {
                             }
 
                         }
+                        maxHeap[patientNum].addCurrentCondition(conditionChoice, urgancy);
                     }
 
                 }

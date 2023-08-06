@@ -1,5 +1,8 @@
 #include "Patients.h"
 
+Patients::Patients() 
+    : name(""), age(0), triageValue(0) {} 
+
 Patients::Patients(const std::string& name, int age)
     : name(name), age(age), triageValue(0) {}
 
