@@ -9,9 +9,6 @@ class MaxHeap {
 private:
     std::vector<Patients> heap;
 
-    void heapifyUp(int index);
-    void heapifyDown(int index);
-
 public:
     MaxHeap();
 
@@ -23,6 +20,9 @@ public:
 
     const Patients& operator[](int index) const;
     void removeAt(int index);
+    void heapifyUp(int index);
+    void heapifyDown(int index);
+    const Patients& peekAtPosition(int position) const;
 };
 
 #endif // MAXHEAP_H

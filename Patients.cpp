@@ -1,10 +1,12 @@
 #include "Patients.h"
+#include <iostream>
+#include <string>
 
-Patients::Patients() 
-    : name(""), age(0), triageValue(0) {} 
+Patients::Patients()
+        : name(""), age(0), triageValue(0) {}
 
 Patients::Patients(const std::string& name, int age)
-    : name(name), age(age), triageValue(0) {}
+        : name(name), age(age), triageValue(0) {}
 
 std::string Patients::getName() const {
     return name;
@@ -18,79 +20,53 @@ int Patients::getTriageValue() const {
     return triageValue;
 }
 
-void Patients::addPriorCondition(const Conditions& condition) {
-    priorConditions[condition.getName()] = condition;
-    triageValue += condition.getPriority();
+void Patients::addPriorCondition(const std::string& conditionName, int urgency) {
+    priorConditions.addCondition(conditionName, urgency);
+    triageValue += urgency;
     calculateTriageValue();
 }
 
-void Patients::addCurrentCondition(const Conditions& condition) { 
-    currentConditions[condition.getName()] = condition; 
-    triageValue += condition.getPriority();
-    calculateTriageValue(); 
+void Patients::addCurrentCondition(const std::string& conditionName, int urgency) {
+    currentConditions.addCondition(conditionName, urgency);
+    triageValue += urgency;
+    calculateTriageValue();
 }
 
 void Patients::removeCurrentCondition(const std::string& conditionName) {
-    if (currentConditions.find(conditionName) != currentConditions.end()) 
-    {
-        triageValue -= currentConditions[conditionName].getPriority();
-        currentConditions.erase(conditionName);
+    if (currentConditions.hasCondition(conditionName)) {
+        triageValue -= currentConditions.getUrgency(conditionName);
+        currentConditions.removeCondition(conditionName);
         calculateTriageValue();
     }
 }
 
 bool Patients::hasPriorCondition(const std::string& conditionName) const {
-    return priorConditions.find(conditionName) != priorConditions.end();
+    return priorConditions.hasCondition(conditionName);
 }
 
 bool Patients::hasCurrentCondition(const std::string& conditionName) const {
-    return currentConditions.find(conditionName) != currentConditions.end();
+    return currentConditions.hasCondition(conditionName);
 }
 
 void Patients::getPriorConditions() const {
     std::cout << "Prior Conditions:" << std::endl;
-    for (const auto& entry : priorConditions) 
-    {
-        const Conditions& condition = entry.second;
-        std::cout << condition.getName() << "-" << condition.getPriority() << std::endl;
-    }
+    priorConditions.printConditions();
 }
 
 void Patients::getCurrentConditions() const {
     std::cout << "Current Conditions:" << std::endl;
-    for (const auto& entry : currentConditions) 
-    {
-        const Conditions& condition = entry.second;
-        std::cout << condition.getName() << "-" << condition.getPriority() << std::endl;
-    }
+    currentConditions.printConditions();
 }
 
 void Patients::updateCurrentConditionPriority(const std::string& conditionName, int urgency) {
-    if (currentConditions.find(conditionName) != currentConditions.end()) 
-    {
-        triageValue -= currentConditions[conditionName].getPriority();
-        currentConditions[conditionName].setPriority(urgency);
+    if (currentConditions.hasCondition(conditionName)) {
+        triageValue -= currentConditions.getUrgency(conditionName);
+        currentConditions.updateConditionUrgency(conditionName, urgency);
         triageValue += urgency;
         calculateTriageValue();
     }
 }
 
 void Patients::calculateTriageValue() {
-    int triageValue = 0;
-
-    // Calculate triage value based on Prior Conditions
-    for (const auto& entry : priorConditions) 
-    {
-        const Conditions& condition = entry.second;
-        triageValue += condition.getPriority();
-    }
-
-    // Calculate triage value based on Current Conditions
-    for (const auto& entry : currentConditions) 
-    {
-        const Conditions& condition = entry.second;
-        triageValue += condition.getPriority();
-    }
-
-    this->triageValue = triageValue;
+    triageValue = priorConditions.calculateTotalUrgency() + currentConditions.calculateTotalUrgency();
 }
