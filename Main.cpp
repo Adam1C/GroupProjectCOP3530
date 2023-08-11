@@ -117,7 +117,7 @@ int main() {
         std::cout << std::endl << "What would you like to do? " << std::endl;
         std::cout << "0) Quit " << std::endl;
         std::cout << "1) Update Current Conditions " << std::endl;
-        std::cout << "2) Remove Patient from Triage " << std::endl;
+        std::cout << "2) Treat Patient from Triage 1" << std::endl;
         // Display additional options if applicable
         if (patientNum != maxHeap.size()) {
             std::cout << "3) View Next Patient " << std::endl;
@@ -223,9 +223,12 @@ int main() {
                 maxHeap.heapifyDown(patientNum);
             }
         } else if (userMenuSelect == 2) { // remove patient at this location
-            maxHeap.removeAt(patientNum);
-            patientNum = 0;
-            patient = maxHeap[patientNum];
+            if (patientNum == 0) {
+                maxHeap.pop();
+                patientNum = 0;
+            }
+            else
+                std::cout << "You need to treat the highest priority patient first";
         } else if (userMenuSelect == 3) { // next patient
             patientNum++;
         } else if (userMenuSelect == 4) { // previous patient
