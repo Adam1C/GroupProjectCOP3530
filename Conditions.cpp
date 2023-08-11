@@ -16,7 +16,7 @@ int Conditions::getUrgency(const std::string& conditionName) const {
     return -1; // Indicate that the condition doesn't exist
 }
 
-void Conditions::printConditions() const { // this functions prints out the conditions
+void Conditions::printConditions() const { // this functions prints out all conditions
     for (const auto& entry : conditionsMap) {
         std::cout << entry.first << "-" << entry.second << std::endl;
     }

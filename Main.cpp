@@ -99,7 +99,7 @@ int main() {
         std::cin >> userMenuSelect;
         Patients &patient = const_cast<Patients &>(maxHeap.peekAtPosition(patientNum));
         if (userMenuSelect == 0)
-            quit = true;
+            quit = true; // fixed loop
         else if (userMenuSelect == 1) {
             bool validInput = false;
             while (!validInput) {
