@@ -26,15 +26,15 @@ int main() {
         std::cout << "Enter the file number (1-5) or file name: ";
         std::cin >> fileNumber;
         if (fileNumber == "1")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input1.txt");
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input6.txt");
         else if (fileNumber == "2")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input2.txt");
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input7.txt");
         else if (fileNumber == "3")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input3.txt");
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input8.txt");
         else if (fileNumber == "4")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input4.txt");
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input9.txt");
         else if (fileNumber == "5")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input5.txt");
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input11.txt");
         else
             inputFile.open(fileNumber);
         if (!inputFile.is_open()) {
