@@ -1,6 +1,7 @@
 #include "Patients.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 Patients::Patients()
         : name(""), age(0), triageValue(0) {}
@@ -12,8 +13,16 @@ std::string Patients::getName() const {
     return name;
 }
 
+void Patients::setName(const std::string& name) {
+    this->name = name;
+}
+
 int Patients::getAge() const {
     return age;
+}
+
+void Patients::setAge(const std::string& age) {
+    this->age = std::atoi(age.c_str());
 }
 
 int Patients::getTriageValue() const {
@@ -54,7 +63,7 @@ void Patients::getPriorConditions() const {
 }
 
 void Patients::getCurrentConditions() const {
-    std::cout << "Current Conditions:" << std::endl;
+    std::cout << std::endl <<"Current Conditions:" << std::endl;
     currentConditions.printConditions();
 }
 
@@ -70,3 +79,4 @@ void Patients::updateCurrentConditionPriority(const std::string& conditionName, 
 void Patients::calculateTriageValue() {
     triageValue = priorConditions.calculateTotalUrgency() + currentConditions.calculateTotalUrgency();
 }
+

@@ -7,15 +7,15 @@
 
 class Patients {
 private:
-    std::string name;
-    int age;
     int triageValue;
     Conditions priorConditions;
     Conditions currentConditions;
+    std::string name;
 
 public:
     Patients();
     Patients(const std::string& name, int age);
+    int age;
 
     // Getters
     std::string getName() const;
@@ -23,6 +23,8 @@ public:
     int getTriageValue() const;
     void getPriorConditions() const;
     void getCurrentConditions() const;
+    void setAge(const std::string& age);
+    void setName(const std::string& name);
 
     // Calculate triage value based on conditions
     void calculateTriageValue();

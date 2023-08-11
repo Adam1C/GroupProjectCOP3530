@@ -1,12 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 #include <vector>
 #include <algorithm>
 #include "MaxHeap.h"
 #include "Patients.h"
 #include "Conditions.h"
 #include <limits>
+#include <regex>
+
 
 
 int main() {
@@ -44,35 +47,46 @@ int main() {
     }
 
     std::string line;
+    Patients patient;
 
-    while (std::getline(inputFile, line)) {
-        Patients patient;
-        std::istringstream iss(line);
-        std::string section;
-        iss >> section;
+    while (getline(inputFile, line)) {
+        if (line.find("PatientInfo:") != std::string::npos) {
+            if (patient.getName() != "") {
+                maxHeap.push(patient);
+            }
+            patient = Patients();
 
-        if (section == "PatientInfo:") {
-            std::string name;
-            int age;
-            iss >> name >> age;
-            Patients patient(name, age);
-        } else if (section == "PriorConditions:") {
+            size_t nameStart = line.find("PatientInfo:") + 12;
+            size_t ageStart = line.find_first_of("0123456789", nameStart);
+            patient.setName(line.substr(nameStart, ageStart - nameStart));
+            patient.setAge(line.substr((ageStart)));
+        } else if (line.find("PriorConditions:") != std::string::npos) {
+            std::stringstream ss(line.substr(line.find("PriorConditions:") + 16));
             std::string condition;
-            while (iss >> condition) {
-                int urgency;
-                iss >> urgency;
-                patient.addPriorCondition(condition, urgency);
+            while (getline(ss, condition, ')')) {
+                size_t startPos = condition.rfind('(');
+                if (startPos != std::string::npos) {
+                    std::string conditionName = condition.substr(0, startPos);
+                    int urgencyValue;
+                    std::stringstream(condition.substr(startPos + 1)) >> urgencyValue;
+                    patient.addPriorCondition(conditionName, urgencyValue);
+                }
             }
-        } else if (section == "CurrentConditions:") {
+        } else if (line.find("CurrentConditions:") != std::string::npos) {
+            std::stringstream ss(line.substr(line.find("CurrentConditions:") + 19));
             std::string condition;
-            while (iss >> condition) {
-                int urgency;
-                iss >> urgency;
-                patient.addCurrentCondition( condition, urgency);
+            while (getline(ss, condition, ')')) {
+                size_t startPos = condition.rfind('(');
+                if (startPos != std::string::npos) {
+                    std::string conditionName = condition.substr(0, startPos);
+                    int urgencyValue;
+                    std::stringstream(condition.substr(startPos + 1)) >> urgencyValue;
+                    patient.addCurrentCondition(conditionName, urgencyValue);
+                }
             }
-            patient.calculateTriageValue();
-            maxHeap.push(patient);
         }
+        patient.calculateTriageValue();
+        maxHeap.push(patient);
     }
 
     inputFile.close(); // Close the input file
