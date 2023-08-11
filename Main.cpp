@@ -8,7 +8,6 @@
 #include "Patients.h"
 #include "Conditions.h"
 #include <limits>
-#include <regex>
 
 
 
@@ -27,17 +26,17 @@ int main() {
         std::cout << "Enter the file number (1-5) or file name: ";
         std::cin >> fileNumber;
         if (fileNumber == "1")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input1.txt");
+            inputFile.open("input1.txt");
         else if (fileNumber == "2")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input2.txt");
+            inputFile.open("input2.txt");
         else if (fileNumber == "3")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input3.txt");
+            inputFile.open("input3.txt");
         else if (fileNumber == "4")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input4.txt");
+            inputFile.open("input4.txt");
         else if (fileNumber == "5")
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input5.txt");
+            inputFile.open("input5.txt");
         else
-            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\" + fileNumber);
+            inputFile.open(fileNumber);
         if (!inputFile.is_open()) {
             std::cout << "Failed to open the input file." << std::endl;
         }
