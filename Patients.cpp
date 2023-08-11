@@ -63,6 +63,15 @@ void Patients::getPriorConditions() const {
     priorConditions.printConditions();  // Print the patient's prior conditions
 }
 
+bool Patients::emptyConditions() const{
+    if (!currentConditions.empty() and !priorConditions.empty())
+    {
+        return false;
+    }
+    else
+        return true;
+}
+
 void Patients::getCurrentConditions() const {
     std::cout << std::endl <<"Current Conditions:" << std::endl; // Formatting
     currentConditions.printConditions();  // Print the patient's current conditions
@@ -80,5 +89,10 @@ void Patients::updateCurrentConditionPriority(const std::string& conditionName, 
 
 void Patients::calculateTriageValue() {
     triageValue = priorConditions.calculateTotalUrgency() + currentConditions.calculateTotalUrgency(); // Calculate the total triage value
+}
+
+void Patients::removeAllConditions() {
+    priorConditions.removeAll();
+    currentConditions.removeAll();
 }
 

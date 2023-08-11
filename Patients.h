@@ -35,6 +35,8 @@ public:
     bool hasPriorCondition(const std::string& conditionName) const; // Check if the patient has a specific prior condition
     bool hasCurrentCondition(const std::string& conditionName) const; // Check if the patient has a specific current condition
     void updateCurrentConditionPriority(const std::string& conditionName, int urgency); // Update the urgency of a current condition
+    bool emptyConditions() const; // checks if there are both current and prior conditions
+    void removeAllConditions(); // removes all conditions from a patient
 };
 
 #endif // PATIENTS_H

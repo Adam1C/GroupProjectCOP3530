@@ -6,6 +6,9 @@ void Conditions::addCondition(const std::string& conditionName, int urgency) {
     conditionsMap[conditionName] = urgency;
 }
 
+bool Conditions::empty() const {
+    return conditionsMap.empty(); // Check if the heap is empty
+}
 // Remove a condition and its associated urgency
 void Conditions::removeCondition(const std::string& conditionName) {
     conditionsMap.erase(conditionName);
@@ -48,4 +51,8 @@ int Conditions::calculateTotalUrgency() const {
         totalUrgency += entry.second; // Sum up all urgencies to calculate the total
     }
     return totalUrgency;
+}
+
+void Conditions::removeAll() {
+    conditionsMap.clear();
 }

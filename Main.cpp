@@ -44,10 +44,10 @@ int main() {
             fileinputopen = true; // Exit loop when file is successfully opened
         }
     }
-
-    // Read patient information from the input file
     std::string line;
     Patients patient;
+    // Read patient information from the input file
+    int counter = 1;
     while (getline(inputFile, line)) {
         if (line.find("PatientInfo:") != std::string::npos)
         {
@@ -57,7 +57,7 @@ int main() {
             pat.setName(line.substr(nameStart, ageStart - nameStart));
             pat.setAge(line.substr((ageStart)));
         }
-        else if (line.find("PriorConditions:") != std::string::npos) // Extract and add prior conditions for the patient
+        if (line.find("PriorConditions:") != std::string::npos) // Extract and add prior conditions for the patient
         {
             std::stringstream ss(line.substr(line.find("PriorConditions:") + 16));
             std::string condition;
@@ -69,12 +69,12 @@ int main() {
                     Patients& pat = patient;
                     std::string conditionName = condition.substr(0, startPos);
                     int urgencyValue;
-                    std::stringstream(condition.substr(startPos + 1)) >> urgencyValue;
+                      std::stringstream(condition.substr(startPos + 1)) >> urgencyValue;
                     pat.addPriorCondition(conditionName, urgencyValue);
                 }
             }
         }
-        else if (line.find("CurrentConditions:") != std::string::npos) // Extract and add current conditions for the patient
+        if (line.find("CurrentConditions:") != std::string::npos) // Extract and add current conditions for the patient
         {
             std::stringstream ss(line.substr(line.find("CurrentConditions:") + 19));
             std::string condition;
@@ -91,8 +91,14 @@ int main() {
                 }
             }
         }
-        patient.calculateTriageValue(); // Calculate the patient's triage value
-        maxHeap.push(patient); // Push the patient into the max heap
+        if (!patient.emptyConditions()) {
+            patient.calculateTriageValue();
+            Patients x = patient;
+            maxHeap.push(x);
+            patient.removeAllConditions();
+        }
+        counter++;
+       // Push the patient into the max heap
     }
     inputFile.close(); // Close the input file
 
@@ -140,7 +146,7 @@ int main() {
                     int urgency;
                     std::cout << "Enter the name of the Condition you would like to add: " << std::endl;
                     std::cin >> conditionChoice;
-                    if (maxHeap[patientNum].hasCurrentCondition(conditionChoice)) // Checks if patient already has Condition
+                    if (patient.hasCurrentCondition(conditionChoice)) // Checks if patient already has Condition
                     {
                         std::cout << "The patient already has the condition." << std::endl;
                         std::cout << "Would you like to update the urgency value? (yes: 1) (no: 0)" << std::endl;
@@ -200,7 +206,7 @@ int main() {
                         int urgency;
                         std::cout << "Enter the name of the Current Condition you would like to remove: " << std::endl;
                         std::cin >> conditionChoice; // condition you want to remove
-                        if (!maxHeap[patientNum].hasCurrentCondition(conditionChoice)) // checks if patient does not condition
+                        if (!patient.hasCurrentCondition(conditionChoice)) // checks if patient does not condition
                         {
                             std::cout << "The patient does not have the condition." << std::endl;
                         }
@@ -219,6 +225,7 @@ int main() {
         } else if (userMenuSelect == 2) { // remove patient at this location
             maxHeap.removeAt(patientNum);
             patientNum = 0;
+            patient = maxHeap[patientNum];
         } else if (userMenuSelect == 3) { // next patient
             patientNum++;
         } else if (userMenuSelect == 4) { // previous patient

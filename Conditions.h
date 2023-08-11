@@ -13,6 +13,8 @@ public:
     void addCondition(const std::string& conditionName, int urgency);
     void removeCondition(const std::string& conditionName);
 
+    void removeAll();
+    bool empty() const;
     // Get the urgency associated with a specific condition
     int getUrgency(const std::string& conditionName) const;
     // Print all stored conditions and their urgencies
