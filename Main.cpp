@@ -8,9 +8,6 @@
 #include "Conditions.h"
 #include <limits>
 
-void heapToSortedArray(std::vector<int>& heap) {
-    std::sort_heap(heap.begin(), heap.end());
-}
 
 int main() {
     MaxHeap maxHeap; // Create an instance of MaxHeap
@@ -22,25 +19,29 @@ int main() {
     std::cout << "The lower a priority value given to a condition the less life-threatening the condition is and vice versa" << std::endl;
 
     std::ifstream inputFile;
+    bool fileinputopen = false;
+    while(!fileinputopen) {
 
-    std::cout << "Enter the file number (1-5) or file name: ";
-    std::cin >> fileNumber;
-    if (fileNumber == "1")
-        inputFile.open("input1.txt");
-    else if (fileNumber == "2")
-        inputFile.open("input2.txt");
-    else if (fileNumber == "3")
-        inputFile.open("input3.txt");
-    else if (fileNumber == "4")
-        inputFile.open("input4.txt");
-    else if (fileNumber == "5")
-        inputFile.open("input5.txt");
-    else
-        inputFile.open(fileNumber);
-
-    if (!inputFile.is_open()) {
-        std::cout << "Failed to open the input file." << std::endl;
-        return 1;
+        std::cout << "Enter the file number (1-5) or file name: ";
+        std::cin >> fileNumber;
+        if (fileNumber == "1")
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input1.txt");
+        else if (fileNumber == "2")
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input2.txt");
+        else if (fileNumber == "3")
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input3.txt");
+        else if (fileNumber == "4")
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input4.txt");
+        else if (fileNumber == "5")
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\input5.txt");
+        else
+            inputFile.open("C:\\Users\\masio\\CLionProjects\\GroupProjectCOP3530\\" + fileNumber);
+        if (!inputFile.is_open()) {
+            std::cout << "Failed to open the input file." << std::endl;
+        }
+        else {
+            fileinputopen = true;
+        }
     }
 
     std::string line;
@@ -78,8 +79,9 @@ int main() {
     inputFile.close(); // Close the input file
     bool quit = false;
     int patientNum = 0;
-    int userMenuSelect;
     while (!quit) {
+        int updateUrgency;
+        int userMenuSelect;
         std::cout << "Patient Number: " << patientNum + 1 << std::endl;
         std::cout << "Patient Name: " << maxHeap[patientNum].getName() << std::endl;
         std::cout << "Age: " << maxHeap[patientNum].getAge() << std::endl;
@@ -102,9 +104,11 @@ int main() {
         else if (userMenuSelect == 1) {
             bool validInput = false;
             while (!validInput) {
-                std::cout << "Would you like to add (1) or remove (2) Current Conditions?" << std::endl;
+                std::cout << "Would you like to add (1) or remove (2) Current Conditions? (0 to quit)" << std::endl;
                 std::cin >> userMenuSelect;
-                if (userMenuSelect == 1) {
+                if (userMenuSelect == 0)
+                    validInput = true;
+                else if (userMenuSelect == 1) {
                     validInput = true;
                     std::string conditionChoice;
                     int urgency;
@@ -113,7 +117,6 @@ int main() {
                     if (maxHeap[patientNum].hasCurrentCondition(conditionChoice)) {
                         std::cout << "The patient already has the condition." << std::endl;
                         std::cout << "Would you like to update the urgency value? (yes: 1) (no: 0)" << std::endl;
-                        int updateUrgency;
                         std::cin >> updateUrgency;
                         if (updateUrgency == 1) {
                             std::cout << "Enter the new urgency value for the condition (1-200): ";
@@ -124,8 +127,7 @@ int main() {
                                 std::cin.clear(); // Clear error flags
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
                                                 '\n'); // Clear input buffer
-                                std::cout << "Invalid input. Urgency value must be a valid integer between 1 and 200."
-                                          << std::endl;
+                                std::cout << "Invalid input. Urgency value must be a valid integer between 1 and 200." << std::endl;
                             } else {
                                 // Update the condition's urgency value
                                 patient.updateCurrentConditionPriority(conditionChoice, urgency);
@@ -141,8 +143,7 @@ int main() {
                         }
                     } else {
                         while (true) {
-                            std::cout
-                                    << "Enter the Urgency of the Condition (1-200, 200 being immediate care needed): ";
+                            std::cout << "Enter the Urgency of the Condition (1-200, 200 being immediate care needed): ";
                             std::cin >> urgency;
 
                             // Check if the input is a valid integer and within the specified range
@@ -167,6 +168,7 @@ int main() {
                         std::cin >> conditionChoice;
                         if (!maxHeap[patientNum].hasCurrentCondition(conditionChoice)) {
                             std::cout << "The patient does not have the condition." << std::endl;
+                            validInput = true;
                         } else {
                             validInput = true;
                             patient.removeCurrentCondition(conditionChoice);
@@ -180,8 +182,8 @@ int main() {
                 maxHeap.heapifyDown(patientNum);
             }
         } else if (userMenuSelect == 2) {
-            maxHeap.pop();
-            patientNum--;
+            maxHeap.removeAt(patientNum);
+            patientNum = 0;
         } else if (userMenuSelect == 3) {
             patientNum++;
         } else if (userMenuSelect == 4) {

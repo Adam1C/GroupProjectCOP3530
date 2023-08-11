@@ -17,7 +17,6 @@ int Conditions::getUrgency(const std::string& conditionName) const {
 }
 
 void Conditions::printConditions() const {
-    std::cout << "Conditions:" << std::endl;
     for (const auto& entry : conditionsMap) {
         std::cout << entry.first << "-" << entry.second << std::endl;
     }

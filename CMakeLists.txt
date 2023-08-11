@@ -1,9 +1,19 @@
 cmake_minimum_required(VERSION 3.26)
 project(GroupProjectCOP3530)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 14
+        input1.txt
+        input2.txt
+        input3.txt
+        input4.txt
+        input5.txt)
 
-include_directories(.)
+include_directories(.
+        input1.txt
+        input2.txt
+        input3.txt
+        input4.txt
+        input5.txt)
 
 add_executable(GroupProjectCOP3530
         Conditions.cpp
