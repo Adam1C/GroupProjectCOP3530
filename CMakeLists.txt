@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
 project(GroupProjectCOP3530)
-
+## not sure if I needed to add this here but am doing so
 set(CMAKE_CXX_STANDARD 14
         input1.txt
         input2.txt

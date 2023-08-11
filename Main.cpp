@@ -11,7 +11,6 @@
 
 int main() {
     MaxHeap maxHeap; // Create an instance of MaxHeap
-
     // Open the input text file
     std::string fileNumber;
 
@@ -21,7 +20,7 @@ int main() {
     std::ifstream inputFile;
     bool fileinputopen = false;
     while(!fileinputopen) {
-
+        // having issues getting conditions and urgency values
         std::cout << "Enter the file number (1-5) or file name: ";
         std::cin >> fileNumber;
         if (fileNumber == "1")
